@@ -1,20 +1,9 @@
 import catImage from '../../assets/catImage.jpg';
+import { CardData } from '../../types';
 import { Button } from '../Button';
 import Ribbon from '../Ribbon';
 
-interface CardProps {
-  title: string;
-  message: string;
-  totalPrice: string;
-  freeGift: boolean;
-}
-
-const Card: React.FC<CardProps> = ({
-  title,
-  message,
-  totalPrice,
-  freeGift,
-}) => {
+const Card: React.FC<CardData> = ({ title, message, totalPrice, freeGift }) => {
   return (
     <div className="relative p-4 md:p-0 bg-white max-h-80  max-w-3xl shadow-md rounded border border-card-border flex flex-col md:flex-row">
       {/* Ribbon Section*/}
@@ -47,7 +36,7 @@ const Card: React.FC<CardProps> = ({
 
       {/* Content Section */}
       <div className="font-inter text-center md:text-left p-4 ">
-        <h2 className="text-card-button text-base font-bold tracking-tight whitespace-nowrap ">
+        <h2 className="text-card-button text-base font-bold tracking-tight md:whitespace-nowrap ">
           {title}
         </h2>
         <p className="mt-2 text-xs font-light tracking-tight text-card-text">
