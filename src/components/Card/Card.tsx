@@ -1,44 +1,65 @@
 import catImage from '../../assets/catImage.jpg';
+import useMediaQuery from '../../hooks/useMediaQuery';
 import { CardData } from '../../types';
 import { Button } from '../Button';
 import Ribbon from '../Ribbon';
+export const mobileImageClasses =
+  'absolute w-14 h-14 rounded-full object-cover object-center -top-12 border-r border-card-imageBorder"';
+export const desktopImageClasses =
+  'w-full rounded object-cover border-r border-card-imageBorder';
 
 const Card: React.FC<CardData> = ({ title, message, totalPrice, freeGift }) => {
+  const isMobile = useMediaQuery('(max-width: 767px)');
+
   return (
-    <div className="relative p-4 md:p-0 bg-white max-h-80  max-w-3xl shadow-md rounded border border-card-border flex flex-col md:flex-row">
-      {/* Ribbon Section*/}
+    <article
+      className="relative p-4 md:p-0 bg-white max-h-80 max-w-3xl shadow-md rounded border border-card-border flex flex-col md:flex-row"
+      aria-labelledby="card-title"
+    >
+      {/* Ribbon Section */}
       {freeGift && (
         <>
-          <div className="hidden md:block">
-            <Ribbon position="topRight" />
-          </div>
-          <div className="md:hidden ">
-            <Ribbon position="bottomCenter" />
-          </div>
+          {!isMobile ? (
+            <div>
+              <Ribbon position="topRight" />
+            </div>
+          ) : (
+            <div>
+              <Ribbon position="bottomCenter" />
+            </div>
+          )}
         </>
       )}
 
       {/* Image Section */}
       <div className="relative flex justify-center md:w-1/2">
-        {/* Desktop image */}
-        <img
-          src={catImage}
-          alt="Cat"
-          className="hidden md:block w-full rounded object-cover border-r border-card-imageBorder"
-        />
-        {/* Mobile image*/}
-        <img
-          src={catImage}
-          alt="Cat"
-          className="absolute md:hidden w-14 h-14 rounded-full object-cover object-center -top-12 border-r border-card-imageBorder"
-        />
+        {!isMobile ? (
+          <img
+            src={catImage}
+            alt="A picture of a cat"
+            className={desktopImageClasses}
+            aria-hidden="true"
+          />
+        ) : (
+          <img
+            src={catImage}
+            alt="A picture of a cat"
+            className={mobileImageClasses}
+            aria-hidden="true"
+          />
+        )}
       </div>
 
       {/* Content Section */}
-      <div className="font-inter text-center md:text-left p-4 ">
-        <h2 className="text-card-button text-base font-bold tracking-tight md:whitespace-nowrap ">
-          {title}
-        </h2>
+      <div className="font-inter text-center md:text-left p-4">
+        <header>
+          <h2
+            id="card-title"
+            className="text-card-button text-base font-bold tracking-tight md:whitespace-nowrap"
+          >
+            {title}
+          </h2>
+        </header>
         <p className="mt-2 text-xs font-light tracking-tight text-card-text">
           {message}
         </p>
@@ -51,7 +72,7 @@ const Card: React.FC<CardData> = ({ title, message, totalPrice, freeGift }) => {
           <Button variant="secondary" text="Edit Delivery" />
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

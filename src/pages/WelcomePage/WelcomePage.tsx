@@ -3,23 +3,25 @@ import { useParams } from 'react-router-dom';
 import Card from '../../components/Card';
 import axios from 'axios';
 import { CardData } from '../../types';
+import { config } from '../../config';
 
 const WelcomePage = () => {
   const { userId } = useParams();
   const [data, setData] = useState<CardData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
+  const { baseURL } = config;
 
   useEffect(() => {
     const fetchDeliveryData = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/comms/your-next-delivery/${userId}`
+          `${baseURL}/comms/your-next-delivery/${userId}`
         );
         setData(response.data);
       } catch (err) {
-        if (axios.isAxiosError(err)) {
-          setError(err.response?.data?.message);
+        if (axios.isAxiosError(err) && err.response) {
+          setError(err.response.data?.message);
         } else {
           setError('An unknown error occurred');
         }
@@ -31,7 +33,7 @@ const WelcomePage = () => {
     if (userId) {
       fetchDeliveryData();
     }
-  }, [userId]);
+  }, [baseURL, userId]);
 
   if (loading) {
     return <div className="text-center">Loading...</div>;
