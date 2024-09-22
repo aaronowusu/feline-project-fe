@@ -1,13 +1,17 @@
 import { render, screen } from '@testing-library/react';
-import Card, { desktopImageClasses, mobileImageClasses } from './Card';
-import { CardData } from '../../types';
+import Card, {
+  CardProps,
+  desktopImageClasses,
+  mobileImageClasses,
+} from './Card';
 import useMediaQuery from '../../hooks/useMediaQuery';
 
-export const mockData: CardData = {
+export const mockData: CardProps = {
   title: 'Your next delivery for Fluffy',
   message: "Hey John! Your cat's next delivery is on the way.",
   totalPrice: '69.99',
   freeGift: true,
+  handleButtonClick: jest.fn(),
 };
 
 jest.mock('../../hooks/useMediaQuery', () => ({
@@ -67,7 +71,11 @@ describe('Card Component', () => {
   });
 
   it('does not render Ribbon when freeGift is false', () => {
-    const mockDataWithoutGift: CardData = { ...mockData, freeGift: false };
+    const mockDataWithoutGift: CardProps = {
+      ...mockData,
+      freeGift: false,
+      handleButtonClick: jest.fn(),
+    };
     render(<Card {...mockDataWithoutGift} />);
     expect(screen.queryByText(/FREE GIFT/i)).not.toBeInTheDocument();
   });

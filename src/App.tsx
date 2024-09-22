@@ -1,10 +1,13 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import WelcomePage from './pages/WelcomePage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <Router>
+      <Toaster position="top-center" />
+
       <div className="bg-pageBackground w-full h-screen">
         <Routes>
           {/* Default route */}

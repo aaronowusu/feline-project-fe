@@ -8,7 +8,17 @@ export const mobileImageClasses =
 export const desktopImageClasses =
   'w-full rounded object-cover border-r border-card-imageBorder';
 
-const Card: React.FC<CardData> = ({ title, message, totalPrice, freeGift }) => {
+export interface CardProps extends CardData {
+  handleButtonClick: (buttonName: string) => void;
+}
+
+const Card: React.FC<CardProps> = ({
+  title,
+  message,
+  totalPrice,
+  freeGift,
+  handleButtonClick,
+}) => {
   const isMobile = useMediaQuery('(max-width: 767px)');
 
   return (
@@ -68,8 +78,16 @@ const Card: React.FC<CardData> = ({ title, message, totalPrice, freeGift }) => {
         </p>
 
         <div className="mt-4 flex gap-x-4 justify-center md:justify-start">
-          <Button variant="primary" text="See Details" />
-          <Button variant="secondary" text="Edit Delivery" />
+          <Button
+            variant="primary"
+            text="See Details"
+            onClick={() => handleButtonClick('See Details')}
+          />
+          <Button
+            variant="secondary"
+            text="Edit Delivery"
+            onClick={() => handleButtonClick('Edit Delivery')}
+          />
         </div>
       </div>
     </article>

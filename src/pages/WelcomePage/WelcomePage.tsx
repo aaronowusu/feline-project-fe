@@ -9,6 +9,7 @@ import { SyncLoader } from 'react-spinners';
 import extractName from '../../utils/extractName';
 import { useNavigationButtons } from '../../hooks/useNavigationButtons';
 import { Button } from '../../components/Button';
+import toast from 'react-hot-toast';
 
 const WelcomePage = () => {
   const { userId } = useParams();
@@ -85,6 +86,17 @@ const WelcomePage = () => {
   const { handleFirst, handlePrevious, handleNext, handleLast, currentIndex } =
     useNavigationButtons(userId, userIds);
 
+  const handleButtonClick = (buttonName: string) => {
+    toast(
+      `${buttonName} is still under construction! Purr-haps try again later?`,
+      {
+        icon: '🐱',
+        className: 'flex items-center justify-center',
+        duration: 2000,
+      }
+    );
+  };
+
   if (error) {
     return <ErrorPage erroMessage={error} />;
   }
@@ -100,7 +112,7 @@ const WelcomePage = () => {
   return (
     <div className="px-4 py-16 w-full flex flex-col justify-center items-center">
       {/* Card Section */}
-      <Card {...data} />
+      <Card {...data} handleButtonClick={handleButtonClick} />
 
       {/* Buttons Section */}
       <div className="flex gap-4 mt-8">
