@@ -13,7 +13,7 @@ const Card: React.FC<CardData> = ({ title, message, totalPrice, freeGift }) => {
 
   return (
     <article
-      className="relative p-4 md:p-0 bg-white max-h-80 max-w-3xl shadow-md rounded border border-card-border flex flex-col md:flex-row"
+      className="relative p-4 md:p-0 bg-white min-h-[245px] max-h-80 max-w-3xl shadow-md rounded border border-card-border flex flex-col md:flex-row "
       aria-labelledby="card-title"
     >
       {/* Ribbon Section */}
@@ -51,11 +51,11 @@ const Card: React.FC<CardData> = ({ title, message, totalPrice, freeGift }) => {
       </div>
 
       {/* Content Section */}
-      <div className="font-inter text-center md:text-left p-4">
+      <div className="font-inter text-center md:text-left p-4 max-w-[413px]">
         <header>
           <h2
             id="card-title"
-            className="text-card-button text-base font-bold tracking-tight md:whitespace-nowrap"
+            className="text-card-button text-base font-bold tracking-tight"
           >
             {title}
           </h2>

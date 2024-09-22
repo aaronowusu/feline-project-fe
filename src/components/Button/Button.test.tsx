@@ -1,6 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import Button from './Button';
-import { primaryButtonClasses, secondaryButtonClasses } from './styles';
+import {
+  disabledPrimaryClasses,
+  primaryButtonClasses,
+  secondaryButtonClasses,
+} from './styles';
 
 describe('Button Component', () => {
   it('renders with the correct text', () => {
@@ -19,5 +23,12 @@ describe('Button Component', () => {
     render(<Button variant="secondary" text="Secondary" />);
     const buttonElement = screen.getByRole('button', { name: /Secondary/i });
     expect(buttonElement).toHaveClass(secondaryButtonClasses);
+  });
+
+  it('disables the button and applies the correct disabled classes for primary', () => {
+    render(<Button variant="primary" text="Primary" disabled={true} />);
+    const buttonElement = screen.getByRole('button', { name: /Primary/i });
+    expect(buttonElement).toBeDisabled();
+    expect(buttonElement).toHaveClass(disabledPrimaryClasses);
   });
 });

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import WelcomePage from './WelcomePage';
 import axios from 'axios';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
@@ -25,22 +25,31 @@ jest.mock('../../config', () => ({
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('WelcomePage', () => {
-  afterEach(() => {
+  beforeEach(() => {
     jest.resetAllMocks();
+
+    mockedAxios.get.mockImplementation((url: string) => {
+      if (url.includes('all-user-ids')) {
+        return Promise.resolve({ data: ['123', '456', '789'] });
+      } else if (url.includes('your-next-delivery')) {
+        return Promise.resolve({ data: mockData });
+      }
+      return Promise.reject({ message: 'Unknown endpoint' });
+    });
   });
   it('renders the Card component with fetched data when API call is successful', async () => {
-    mockedAxios.get.mockResolvedValueOnce({ data: mockData });
-
     renderWithRouter();
 
-    expect(
-      await screen.findByText(/Your next delivery for Fluffy/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Hey John! Your cat's next delivery is on the way./i)
-    ).toBeInTheDocument();
-    expect(screen.getByText(/Total price: £69.99/i)).toBeInTheDocument();
-    expect(screen.getByText(/FREE GIFT/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByText(/Your next delivery for Fluffy/i)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(/Hey John! Your cat's next delivery is on the way./i)
+      ).toBeInTheDocument();
+      expect(screen.getByText(/Total price: £69.99/i)).toBeInTheDocument();
+      expect(screen.getByText(/FREE GIFT/i)).toBeInTheDocument();
+    });
   });
 
   it('renders the ErrorPage component when a non 404 Error occurs', async () => {

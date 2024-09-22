@@ -8,7 +8,8 @@ const NotFoundPage = () => {
 
   useEffect(() => {
     document.title = 'Not Found';
-  }, []);
+    navigate('/404');
+  }, [navigate]);
 
   return (
     <div className="flex flex-col items-center h-full bg-white justify-center p-4 text-center">

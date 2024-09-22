@@ -6,6 +6,9 @@ import { CardData } from '../../types';
 import { config } from '../../config';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import { SyncLoader } from 'react-spinners';
+import extractName from '../../utils/extractName';
+import { useNavigationButtons } from '../../hooks/useNavigationButtons';
+import { Button } from '../../components/Button';
 
 const WelcomePage = () => {
   const { userId } = useParams();
@@ -13,28 +16,55 @@ const WelcomePage = () => {
   const [data, setData] = useState<CardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [userIds, setUserIds] = useState<string[]>([]);
   const { baseURL } = config;
 
+  // Fetch all user ids
   useEffect(() => {
-    document.title = 'Welcome';
-    const fetchDeliveryData = async () => {
+    const fetchAllUserIds = async () => {
       try {
-        const response = await axios.get(
-          `${baseURL}/comms/your-next-delivery/${userId}`
-        );
-        setData(response.data);
+        const response = await axios.get(`${baseURL}/comms/all-user-ids`);
+        const ids = response.data;
+        setUserIds(ids);
+
+        // If no userId is provided, navigate to the first user ID
+        if (!userId && ids.length > 0) {
+          navigate(`/welcome/${ids[0]}`);
+        }
       } catch (err) {
         if (axios.isAxiosError(err) && err.response) {
-          if (err.response.status === 404) {
-            navigate('/404');
-          } else {
-            setError(err.response.data?.message);
-          }
+          setError(err.response.data?.message);
         } else {
           setError('An unknown error occurred');
         }
-      } finally {
-        setLoading(false);
+      }
+    };
+
+    fetchAllUserIds();
+  }, [baseURL, userId, navigate]);
+
+  // Fetch delivery data for the current user
+  useEffect(() => {
+    const fetchDeliveryData = async () => {
+      if (userId) {
+        try {
+          const response = await axios.get(
+            `${baseURL}/comms/your-next-delivery/${userId}`
+          );
+          setData(response.data);
+        } catch (err) {
+          if (axios.isAxiosError(err) && err.response) {
+            if (err.response.status === 404) {
+              navigate('/404');
+            } else {
+              setError(err.response.data?.message);
+            }
+          } else {
+            setError('An unknown error occurreddd');
+          }
+        } finally {
+          setLoading(false);
+        }
       }
     };
 
@@ -42,6 +72,18 @@ const WelcomePage = () => {
       fetchDeliveryData();
     }
   }, [baseURL, navigate, userId]);
+
+  // Set the document title to include the user's name
+  useEffect(() => {
+    if (!loading && data) {
+      const extractedName = extractName(data.message || '');
+      document.title = `Welcome ${extractedName}`;
+    }
+  }, [data, loading]);
+
+  // Navigation handlers
+  const { handleFirst, handlePrevious, handleNext, handleLast, currentIndex } =
+    useNavigationButtons(userId, userIds);
 
   if (error) {
     return <ErrorPage erroMessage={error} />;
@@ -56,8 +98,37 @@ const WelcomePage = () => {
   }
 
   return (
-    <div className="px-4 py-16 w-full flex justify-center">
+    <div className="px-4 py-16 w-full flex flex-col justify-center items-center">
+      {/* Card Section */}
       <Card {...data} />
+
+      {/* Buttons Section */}
+      <div className="flex gap-4 mt-8">
+        <Button
+          variant="primary"
+          text="First"
+          onClick={handleFirst}
+          disabled={currentIndex === 0}
+        />
+        <Button
+          variant="primary"
+          text="Prev"
+          onClick={handlePrevious}
+          disabled={currentIndex === 0}
+        />
+        <Button
+          variant="primary"
+          text="Next"
+          onClick={handleNext}
+          disabled={currentIndex === userIds.length - 1}
+        />
+        <Button
+          variant="primary"
+          text="Last"
+          onClick={handleLast}
+          disabled={currentIndex === userIds.length - 1}
+        />
+      </div>
     </div>
   );
 };
