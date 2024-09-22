@@ -2,6 +2,18 @@
 
 This project provides a frontend for the Feline Project, where users can view their cat's next delivery details. The frontend interacts with a backend API to fetch delivery information and manage navigation between different user accounts.
 
+## Demo 
+
+   ### Mobile View
+   https://github.com/user-attachments/assets/daf036e9-4c01-40b9-ac13-b40dc7692f52
+
+
+
+   ### Desktop View
+   https://github.com/user-attachments/assets/843d121c-d1ce-4f78-a83a-8b0de5bd5ba2
+
+
+   
 ## Prerequisites
 
 - **Node.js** version 18 or later.
