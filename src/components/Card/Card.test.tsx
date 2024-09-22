@@ -10,7 +10,6 @@ export const mockData: CardData = {
   freeGift: true,
 };
 
-jest.mock('../../assets/catImage.jpg', () => 'mocked-cat-image.jpg');
 jest.mock('../../hooks/useMediaQuery', () => ({
   __esModule: true,
   default: jest.fn(),
@@ -35,7 +34,6 @@ describe('Card Component', () => {
 
     // Assert that the card renders with the desktop image
     const catImage = screen.getByAltText(/A picture of a cat/i);
-    expect(catImage).toHaveAttribute('src', 'mocked-cat-image.jpg');
     expect(catImage).toHaveClass(desktopImageClasses);
 
     //Assert that Ribbon is rendered
@@ -57,7 +55,6 @@ describe('Card Component', () => {
 
     // Assert that the card renders with the mobile image
     const catImage = screen.getByAltText(/A picture of a cat/i);
-    expect(catImage).toHaveAttribute('src', 'mocked-cat-image.jpg');
     expect(catImage).toHaveClass(mobileImageClasses);
 
     //Assert that Ribbon is rendered

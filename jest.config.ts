@@ -11,7 +11,7 @@ const config: Config.InitialOptions = {
   
   moduleNameMapper: {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
-    "^.+\\.svg$": "jest-transformer-svg",
+    "^.+\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/__mocks__/fileMock.ts", 
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
 };

@@ -8,3 +8,6 @@ Object.defineProperty(global, 'import.meta', {
     },
   });
 
+  jest.mock('../../assets/catImage.jpg', () => 'mocked-cat-image.jpg');
+  jest.mock('../../assets/error.png', () => 'mocked-error-image.jpg');
+  jest.mock('../../assets/404.png', () => 'mocked-cat-404-image.jpg');

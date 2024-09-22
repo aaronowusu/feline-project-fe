@@ -1,18 +1,22 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Card from '../../components/Card';
 import axios from 'axios';
 import { CardData } from '../../types';
 import { config } from '../../config';
+import ErrorPage from '../ErrorPage/ErrorPage';
+import { SyncLoader } from 'react-spinners';
 
 const WelcomePage = () => {
   const { userId } = useParams();
+  const navigate = useNavigate();
   const [data, setData] = useState<CardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { baseURL } = config;
 
   useEffect(() => {
+    document.title = 'Welcome';
     const fetchDeliveryData = async () => {
       try {
         const response = await axios.get(
@@ -21,7 +25,11 @@ const WelcomePage = () => {
         setData(response.data);
       } catch (err) {
         if (axios.isAxiosError(err) && err.response) {
-          setError(err.response.data?.message);
+          if (err.response.status === 404) {
+            navigate('/404');
+          } else {
+            setError(err.response.data?.message);
+          }
         } else {
           setError('An unknown error occurred');
         }
@@ -33,18 +41,18 @@ const WelcomePage = () => {
     if (userId) {
       fetchDeliveryData();
     }
-  }, [baseURL, userId]);
-
-  if (loading) {
-    return <div className="text-center">Loading...</div>;
-  }
+  }, [baseURL, navigate, userId]);
 
   if (error) {
-    return <div className="text-center text-red-500">Error: {error}</div>;
+    return <ErrorPage erroMessage={error} />;
   }
 
-  if (!data) {
-    return <div className="text-center">No data available.</div>;
+  if (loading || !data) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <SyncLoader color="#0D8112" />
+      </div>
+    );
   }
 
   return (
