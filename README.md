@@ -1,50 +1,87 @@
-# React + TypeScript + Vite
+# Feline Project Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project provides a frontend for the Feline Project, where users can view their cat's next delivery details. The frontend interacts with a backend API to fetch delivery information and manage navigation between different user accounts.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Node.js** version 18 or later.
+- **Yarn** (or npm) to install and manage dependencies.
 
-## Expanding the ESLint configuration
+## How to Run the Frontend
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. **Clone the repository and change into the project directory**:
 
-- Configure the top-level `parserOptions` property like this:
+   ```bash
+   git clone https://github.com/aaronowusu/feline-project-fe.git
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+   cd feline-project-fe
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   yarn install
+   ```
+
+3. **Start the application**:
+   ```bash
+   yarn start
+   ```
+   The server will be running at http://localhost:5173
+
+## Project Structure
+
+  ### **src**
+  This directory contains the main codebase for the frontend.
+
+  ### **components**
+  Reusable UI components, including buttons, cards, and ribbons.
+
+  ### **pages**
+  Main pages for the application, such as the WelcomePage and NotFoundPage.
+
+  ### **hooks**
+  Custom React hooks, including hooks for media queries and navigation buttons.
+
+  ### **utils**
+  Utility functions such as `extractName` and `cx` for Tailwind CSS class merging.
+
+  ### **types**
+  TypeScript types used throughout the application.
+
+  ### **assets**
+  Images and other static assets used in the UI.
+
+## Environment Variables
+
+Make sure to create a `.env` file in the root of your project to specify your backend API base URL use the .env.example file as a template.
+
+```bash
+VITE_BASE_URL=http://localhost:3000
+
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Running Tests
+Unit tests are written using Jest and React Testing Library. To run the tests, use the following command:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+yarn test
 ```
+
+## Improvements
+
+1. **State Management for Scalability**:
+   Adding a state management library such as **Zustand** or **React Context** would ensure better scalability of the application.
+
+2. **Storybook Integration**:
+   Introducing **Storybook** would allow us to visualise and test UI components in isolation.
+
+3. **Design Token-Based System for Responsiveness**:
+   Now that we are using **CVA** (Class Variance Authority) and **Tailwind Merge** for style management, we could implement a **token-based design system**. This would enhance responsiveness across the app by defining tokens for text properties such as:
+   
+   - **Font Size**
+   - **Letter Spacing**
+   - **Line Height**
+   
+   This approach would improve consistency, responsiveness, and maintainability by allowing easy adjustments across different breakpoints and screen sizes.
+
